@@ -66,6 +66,7 @@ X_train, X_validation, Y_train, Y_validation = train_test_split(X, y, test_size=
 # This will split dataset into 10 parts, train on 9 and test on 1 and repeat 
 # for all combinations of train-test splits.
 
+
 #Testing 6 different alogrithms for Spot Check:
 models = []
 models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
@@ -74,6 +75,8 @@ models.append(('KNN', KNeighborsClassifier()))
 models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('SVM', SVC(gamma='auto')))
+
+
 # evaluate each model in turn
 results = []
 names = []
@@ -84,3 +87,18 @@ for name, model in models:
 	names.append(name)
 	print('%s: %f (%f)' % (name, cv_results.mean(), cv_results.std()))
 
+
+#Visually Compare Algorithms
+#pyplot.boxplot(results, labels=names)
+#pyplot.title('Algorithm Comparison')
+#pyplot.show()
+
+# Make predictions on validation dataset
+model = SVC(gamma='auto')
+model.fit(X_train, Y_train)
+predictions = model.predict(X_validation)
+
+#Evaluate predictions
+print(accuracy_score(Y_validation, predictions))
+print(confusion_matrix(Y_validation, predictions))
+print(classification_report(Y_validation, predictions))
